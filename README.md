@@ -1,6 +1,12 @@
-# Cpp-Voronoi
+# Cpp-Geometry
 
-A C++ implementation of Fortune's Algorithm for the computation of Voronoi diagrams.
+A collection of geometrical algorithm implementations.
+
+# Implementations:
+- [x] Minor utilities
+- [x] Convex hull (Graham scan variation)
+- [ ] Voronoi diagram generation (Fortune's algorithm)
+- [ ] Graphical UI
 
 # Author
 

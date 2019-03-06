@@ -1,12 +1,12 @@
 # Cpp-Geometry
 
-A collection of geometrical algorithm implementations.
+A collection of geometric algorithm implementations.
 
 # Implementations:
 - [x] Minor utilities
 - [x] Convex hull (Graham scan variation)
 - [ ] Voronoi diagram generation (Fortune's algorithm)
-- [ ] Graphical UI
+- [ ] OpenGL demos
 
 # Author
 

@@ -1,31 +1,53 @@
-CXXFLAGS = -Wall -pedantic -Wextra -pedantic-errors -DNDEBUG
-CXXFLAGS_DEBUG = -Wall -pedantic -Wextra -pedantic-errors -g
+CXX      := -g++
+CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -DNDEBUG
+CXXFLAGS_DEBUG := -pedantic-errors -Wall -Wextra -Werror -g
+LDFLAGS  := -L/usr/lib -lstdc++ -lm
+BUILD    := ./build
+OBJ_DIR  := $(BUILD)/objects
+APP_DIR  := $(BUILD)/apps
+TARGET   := app
+TARGET_DEMO := demo
+INCLUDE  := -Iinclude/
+SRC      :=                      \
+	$(wildcard src/*.cpp)         \
 
-BASIC_FLAGS = -DNDEBUG
+OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-main.exe: main.o
-	g++ $(BASIC_FLAGS) main.o -o main.exe
+all: build $(APP_DIR)/$(TARGET)
 
-main.o: main.cpp
-	g++ $(BASIC_FLAGS) -c main.cpp -o main.o
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-.PHONY: clean release rebuild doc debug run_valgrind
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $(OBJECTS)
+
+.PHONY: all build clean debug release run_valgrind demo
+
+demo: build $(APP_DIR)/$(TARGET_DEMO)
+
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
+
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $(OBJECTS) 
+
+build:
+	@mkdir -p $(APP_DIR)
+	@mkdir -p $(OBJ_DIR)
+
+debug: CXXFLAGS := $(CXXFLAGS_DEBUG)
+debug: all
+
+release: CXXFLAGS += -O2
+release: all
 
 clean:
-	rm -f *.exe *.o
-
-release:
-	g++ $(CXXFLAGS) -c main.cpp -o main.o
-	g++ $(CXXFLAGS) main.o -o main.exe
-
-doc: 	
-	doxygen Doxyfile
-
-rebuild: clean release
-
-debug: 
-	g++ $(CXXFLAGS_DEBUG) -c main.cpp -o main.o
-	g++ $(CXXFLAGS_DEBUG) main.o -o main.exe
+	-@rm -rvf $(OBJ_DIR)/*
+	-@rm -rvf $(APP_DIR)/*
 
 run_valgrind: debug
-	valgrind --leak-check=yes --track-origins=yes --leak-check=full --show-leak-kinds=all -v ./main.exe
+	valgrind --leak-check=yes --track-origins=yes --leak-check=full --show-leak-kinds=all -v ./build/app

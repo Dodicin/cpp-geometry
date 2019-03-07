@@ -1,53 +1,53 @@
-CXX      := -g++
+CXX      := g++
 CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -DNDEBUG
 CXXFLAGS_DEBUG := -pedantic-errors -Wall -Wextra -Werror -g
 LDFLAGS  := -L/usr/lib -lstdc++ -lm
+INCLUDE	 := -I include
+
 BUILD    := ./build
-OBJ_DIR  := $(BUILD)/objects
-APP_DIR  := $(BUILD)/apps
-TARGET   := app
-TARGET_DEMO := demo
-INCLUDE  := -Iinclude/
-SRC      :=                      \
-	$(wildcard src/*.cpp)         \
+BIN		 := ./bin
 
-OBJECTS := $(SRC:%.cpp=$(OBJ_DIR)/%.o)
+TARGET_TEST := tests.exe
+TARGET   := app.exe
 
-all: build $(APP_DIR)/$(TARGET)
+TEST_SRC := $(wildcard test/*.cpp)
+SRC      := $(wildcard src/*.cpp)
 
-$(OBJ_DIR)/%.o: %.cpp
+OBJECTS_SRC := $(SRC:%.cpp=$(BUILD)/%.o)
+OBJECTS_TEST := $(TEST_SRC:%.cpp=$(BUILD)/%.o)
+
+
+$(BUILD)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(APP_DIR)/$(TARGET): $(OBJECTS)
+$(BIN)/$(TARGET): $(OBJECTS_SRC)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $@ $^
 
-.PHONY: all build clean debug release run_valgrind demo
-
-demo: build $(APP_DIR)/$(TARGET_DEMO)
-
-$(OBJ_DIR)/%.o: %.cpp
+$(BIN)/$(TARGET_TEST): $(OBJECTS_TEST)
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $@ $^
 
-$(APP_DIR)/$(TARGET): $(OBJECTS)
-	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $(OBJECTS) 
+.PHONY: all build clean debug release run_valgrind
+
+all: build $(BIN)/$(TARGET)
+
+test: build $(BIN)/$(TARGET_TEST)
 
 build:
-	@mkdir -p $(APP_DIR)
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(BUILD)
+	@mkdir -p $(BIN)
 
-debug: CXXFLAGS := $(CXXFLAGS_DEBUG)
+debug: CXXFLAGS = $(CXXFLAGS_DEBUG)
 debug: all
 
 release: CXXFLAGS += -O2
 release: all
 
 clean:
-	-@rm -rvf $(OBJ_DIR)/*
-	-@rm -rvf $(APP_DIR)/*
+	-@rm -rvf $(BUILD)/*
+	-@rm -rvf $(BIN)/*
 
 run_valgrind: debug
 	valgrind --leak-check=yes --track-origins=yes --leak-check=full --show-leak-kinds=all -v ./build/app

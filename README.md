@@ -10,9 +10,13 @@ A collection of geometric algorithm implementations.
 - `demos/` contains precompiled visual demos of the algorithms.
 
 # Progress:
+## Geometry library
 - [x] Minor utilities
 - [x] Convex hull (Graham scan variation)
 - [ ] Voronoi diagram generation (Fortune's algorithm)
+
+## Rendering engine
+- [ ] OpenGL renderer
 - [ ] OpenGL demos
 
 # Author

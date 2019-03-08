@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -DNDEBUG
+CXXFLAGS := -DNDEBUG
 CXXFLAGS_DEBUG := -pedantic-errors -Wall -Wextra -Werror -g
 LDFLAGS  := -L/usr/lib -lstdc++ -lm -lglfw -lGL -lGLEW
 INCLUDE	 := -I include

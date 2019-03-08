@@ -1,7 +1,7 @@
 CXX      := g++
 CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -DNDEBUG
 CXXFLAGS_DEBUG := -pedantic-errors -Wall -Wextra -Werror -g
-LDFLAGS  := -L/usr/lib -lstdc++ -lm
+LDFLAGS  := -L/usr/lib -lstdc++ -lm -lglfw -lGL -lGLEW
 INCLUDE	 := -I include
 
 BUILD    := ./build
@@ -15,7 +15,6 @@ SRC      := $(wildcard src/*.cpp)
 
 OBJECTS_SRC := $(SRC:%.cpp=$(BUILD)/%.o)
 OBJECTS_TEST := $(TEST_SRC:%.cpp=$(BUILD)/%.o)
-
 
 $(BUILD)/%.o: %.cpp
 	@mkdir -p $(@D)
@@ -40,7 +39,6 @@ build:
 	@mkdir -p $(BIN)
 
 debug: CXXFLAGS = $(CXXFLAGS_DEBUG)
-debug: all
 
 release: CXXFLAGS += -O2
 release: all

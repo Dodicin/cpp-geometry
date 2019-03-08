@@ -2,10 +2,10 @@
 
 class IndexBuffer
 {
-    private:
+private:
         unsigned int m_RendererID;
         unsigned int m_Count;
-    public:
+public:
     IndexBuffer(const unsigned* data, unsigned int count);
     ~IndexBuffer();
 

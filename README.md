@@ -3,7 +3,7 @@
 A collection of geometric algorithm implementations.
 
 # Structure
-- `include/` contains the headers of the library with the algorithms implementations'
+- `include/` contains the headers of the library with the algorithms implementations.
 - `src/` contains the source code for the demos.
 - `lib/` contains the statically linked libraries.
 - `res/` contains various resources for OpenGL (shaders, etc).
@@ -17,7 +17,7 @@ A collection of geometric algorithm implementations.
 
 ## Rendering engine
 - [ ] OpenGL renderer
-- [ ] OpenGL demos
+- [ ] Visual demos
 
 # Author
 

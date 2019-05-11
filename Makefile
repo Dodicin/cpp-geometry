@@ -7,32 +7,23 @@ INCLUDE	 := -I include
 BUILD    := ./build
 BIN		 := ./bin
 
-TARGET_TEST := tests.exe
-TARGET   := app.exe
+TARGET   := test.exe
 
-TEST_SRC := $(wildcard test/*.cpp)
-SRC      := $(wildcard src/*.cpp)
+TEST := $(wildcard test/*.cpp)
 
-OBJECTS_SRC := $(SRC:%.cpp=$(BUILD)/%.o)
-OBJECTS_TEST := $(TEST_SRC:%.cpp=$(BUILD)/%.o)
+OBJECTS := $(TEST:%.cpp=$(BUILD)/%.o)
 
 $(BUILD)/%.o: %.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) -o $@ -c $<
 
-$(BIN)/$(TARGET): $(OBJECTS_SRC)
-	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $@ $^
-
-$(BIN)/$(TARGET_TEST): $(OBJECTS_TEST)
+$(BIN)/$(TARGET): $(OBJECTS)
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) $(INCLUDE) $(LDFLAGS) -o $@ $^
 
 .PHONY: all build clean debug release run_valgrind
 
 all: build $(BIN)/$(TARGET)
-
-test: build $(BIN)/$(TARGET_TEST)
 
 build:
 	@mkdir -p $(BUILD)

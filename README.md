@@ -1,13 +1,10 @@
 # cpp-geometry
 
-A collection of geometric algorithm implementations.
+A collection of geometric algorithm implementations in C++.
 
 # Structure
 - `include/` contains the headers of the library with the algorithms implementations.
-- `src/` contains the source code for the demos.
-- `lib/` contains the statically linked libraries.
-- `res/` contains various resources for OpenGL (shaders, etc).
-- `demos/` contains precompiled visual demos of the algorithms.
+- `test/` contains the unit tests.
 
 # Progress:
 ## Geometry library
@@ -15,9 +12,6 @@ A collection of geometric algorithm implementations.
 - [x] Convex hull (Graham scan variation)
 - [ ] Voronoi diagram generation (Fortune's algorithm)
 
-## Rendering engine
-- [ ] OpenGL renderer
-- [ ] Visual demos
 
 # Author
 
